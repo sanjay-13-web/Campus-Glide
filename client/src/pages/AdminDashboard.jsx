@@ -298,6 +298,51 @@ export default function AdminDashboard() {
             <h2 className="text-3xl font-extrabold mb-2 text-gray-800 flex items-center gap-2"><FiTruck /> Manage Fleet & Drivers</h2>
             <p className="text-gray-500 mb-6">Assign and update daily drivers for each bus route.</p>
 
+            {/* Add New Bus Form */}
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+              <h3 className="text-lg font-bold mb-4 text-primary border-b pb-2">➕ Register New Bus</h3>
+              <form onSubmit={async (e) => {
+                e.preventDefault();
+                try {
+                  const formData = new FormData(e.target);
+                  const busData = {
+                    busNo: formData.get('busNo'),
+                    route: formData.get('route'),
+                    driverName: formData.get('driverName'),
+                    driverPhone: formData.get('driverPhone')
+                  };
+                  await api.post('/bus', busData);
+                  alert('Bus added successfully!');
+                  e.target.reset();
+                  fetchBuses(); // Refresh table
+                } catch (err) {
+                  alert(err.response?.data?.message || 'Failed to add bus');
+                }
+              }} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                <div>
+                  <label className="text-xs font-bold text-gray-500 uppercase">Bus Number</label>
+                  <input type="text" name="busNo" required placeholder="e.g. 105" className="w-full mt-1 border p-2 rounded focus:ring-2 outline-none bg-gray-50" />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-gray-500 uppercase">Route Name</label>
+                  <input type="text" name="route" required placeholder="e.g. East Campus" className="w-full mt-1 border p-2 rounded focus:ring-2 outline-none bg-gray-50" />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-gray-500 uppercase">Driver Name</label>
+                  <input type="text" name="driverName" required placeholder="e.g. Mike Smith" className="w-full mt-1 border p-2 rounded focus:ring-2 outline-none bg-gray-50" />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-gray-500 uppercase">Driver Phone</label>
+                  <input type="text" name="driverPhone" required placeholder="e.g. 555-0103" className="w-full mt-1 border p-2 rounded focus:ring-2 outline-none bg-gray-50" />
+                </div>
+                <div className="md:col-span-4 mt-2">
+                  <button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white font-bold p-3 rounded-lg transition shadow-sm">
+                    Add New Bus to Fleet
+                  </button>
+                </div>
+              </form>
+            </div>
+
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
