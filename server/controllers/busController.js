@@ -83,13 +83,18 @@ exports.getBusArrival = async (req, res) => {
     const bus = await Bus.findOne({ busNo: req.params.busNo });
     if (!bus) return res.status(404).json({ message: 'Bus not found' });
     
+    // Fake dynamic simulation for Vercel presentation
+    const fakeETA = Math.floor(Math.random() * 10) + 2; // 2 to 11 mins
+    const fakeLat = bus.lat + (Math.random() * 0.005);
+    const fakeLng = bus.lng + (Math.random() * 0.005);
+    
     res.json({
       busNo: bus.busNo,
-      currentLocation: bus.currentLocation,
-      estimatedArrival: bus.estimatedArrival,
-      lat: bus.lat,
-      lng: bus.lng,
-      trafficStatus: bus.trafficStatus,
+      currentLocation: "En route to Campus",
+      estimatedArrival: fakeETA,
+      lat: fakeLat,
+      lng: fakeLng,
+      trafficStatus: fakeETA > 7 ? 'Moderate' : 'Light',
       dropoffTime: bus.dropoffTime
     });
   } catch (error) {
