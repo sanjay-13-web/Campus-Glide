@@ -34,6 +34,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Ensure MongoDB is connected on every Vercel request
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
+
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/student', require('./routes/studentRoutes'));
