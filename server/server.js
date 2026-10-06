@@ -3,9 +3,34 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
 const connectDB = require('./config/db');
+const User = require('./models/User');
+const Bus = require('./models/Bus');
+const bcrypt = require('bcryptjs');
 
 dotenv.config();
-connectDB();
+connectDB().then(async () => {
+  // Auto-seed for Vercel Cloud Database if empty
+  try {
+    const adminExists = await User.findOne({ email: 'admin@college.edu' });
+    if (!adminExists) {
+      console.log('Empty database detected! Auto-seeding demo data...');
+      const hashedPass = await bcrypt.hash('password123', 10);
+      await User.create({ name: 'System Admin', email: 'admin@college.edu', password: hashedPass, role: 'admin' });
+      await User.create({ name: 'Demo Student', email: 'student@college.edu', password: hashedPass, role: 'student', studentId: 'STU001', busNo: '101' });
+      
+      const busExists = await Bus.findOne({ busNo: '101' });
+      if (!busExists) {
+        await Bus.create([
+          { busNo: '101', route: 'North Campus Route', driverName: 'John Doe', driverPhone: '555-0101' },
+          { busNo: '102', route: 'South City Route', driverName: 'Jane Smith', driverPhone: '555-0102' }
+        ]);
+      }
+      console.log('Auto-seeding complete!');
+    }
+  } catch (err) {
+    console.error('Auto-seed failed:', err);
+  }
+});
 
 const app = express();
 app.use(cors());
