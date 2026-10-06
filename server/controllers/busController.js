@@ -31,8 +31,8 @@ const simulateMovement = async () => {
   }
 };
 
-// Run simulation every 30 seconds
-setInterval(simulateMovement, 30000);
+// Simulation disabled for Vercel Serverless environment to prevent timeouts
+// setInterval(simulateMovement, 30000);
 
 const Attendance = require('../models/Attendance');
 
