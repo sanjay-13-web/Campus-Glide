@@ -376,6 +376,13 @@ export default function AdminDashboard() {
                         }} className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow hover:bg-blue-700 transition">
                           Change Driver
                         </button>
+                        <button onClick={() => {
+                          const url = `${window.location.origin}/driver/${b.busNo}`;
+                          navigator.clipboard.writeText(url);
+                          alert(`Driver Tracking Link copied to clipboard!\n\n${url}\n\nSend this via SMS to the driver!`);
+                        }} className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow hover:bg-green-700 transition ml-2 mt-2 xl:mt-0">
+                          Copy SMS Link
+                        </button>
                       </td>
                     </tr>
                   ))}
