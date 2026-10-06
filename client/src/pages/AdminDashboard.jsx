@@ -307,6 +307,7 @@ export default function AdminDashboard() {
                   const formData = new FormData(e.target);
                   const busData = {
                     busNo: formData.get('busNo'),
+                    busName: `Bus ${formData.get('busNo')}`, // Auto-fill required busName
                     route: formData.get('route'),
                     driverName: formData.get('driverName'),
                     driverPhone: formData.get('driverPhone')
