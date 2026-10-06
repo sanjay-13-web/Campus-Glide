@@ -5,7 +5,6 @@ const path = require('path');
 const connectDB = require('./config/db');
 const User = require('./models/User');
 const Bus = require('./models/Bus');
-const bcrypt = require('bcryptjs');
 
 dotenv.config();
 connectDB().then(async () => {
@@ -14,9 +13,8 @@ connectDB().then(async () => {
     const adminExists = await User.findOne({ email: 'admin@college.edu' });
     if (!adminExists) {
       console.log('Empty database detected! Auto-seeding demo data...');
-      const hashedPass = await bcrypt.hash('password123', 10);
-      await User.create({ name: 'System Admin', email: 'admin@college.edu', password: hashedPass, role: 'admin' });
-      await User.create({ name: 'Demo Student', email: 'student@college.edu', password: hashedPass, role: 'student', studentId: 'STU001', busNo: '101' });
+      await User.create({ name: 'System Admin', email: 'admin@college.edu', password: 'password123', role: 'admin' });
+      await User.create({ name: 'Demo Student', email: 'student@college.edu', password: 'password123', role: 'student', studentId: 'STU001', busNo: '101' });
       
       const busExists = await Bus.findOne({ busNo: '101' });
       if (!busExists) {
