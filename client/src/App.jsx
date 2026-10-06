@@ -6,6 +6,8 @@ import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
 import StudentDashboard from './pages/StudentDashboard';
 
+import DriverTracker from './pages/DriverTracker';
+
 const PrivateRoute = ({ children, role }) => {
   const { user } = useContext(AuthContext);
   if (!user) return <Navigate to="/" />;
@@ -20,6 +22,7 @@ function App() {
       <Routes>
         <Route path="/" element={user ? <Navigate to={`/${user.role}`} /> : <Landing />} />
         <Route path="/login" element={user ? <Navigate to={`/${user.role}`} /> : <Login />} />
+        <Route path="/driver/:busNo" element={<DriverTracker />} />
         <Route path="/admin/*" element={<PrivateRoute role="admin"><AdminDashboard /></PrivateRoute>} />
         <Route path="/student/*" element={<PrivateRoute role="student"><StudentDashboard /></PrivateRoute>} />
       </Routes>

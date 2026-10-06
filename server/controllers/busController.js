@@ -101,3 +101,17 @@ exports.getBusArrival = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.updateLocation = async (req, res) => {
+  try {
+    const { lat, lng } = req.body;
+    const bus = await Bus.findOneAndUpdate(
+      { busNo: req.params.busNo },
+      { lat, lng, currentLocation: 'En route (Live GPS)' },
+      { new: true }
+    );
+    res.json(bus);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
